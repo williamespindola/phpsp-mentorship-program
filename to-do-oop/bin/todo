@@ -1,0 +1,6 @@
+#!/usr/bin/php
+<?php
+
+chdir(dirname(__DIR__));
+
+var_dump($argv);
