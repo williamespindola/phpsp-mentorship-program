@@ -3,9 +3,9 @@
 
 include __DIR__ . "/../vendor/autoload.php";
 
-use PDO;
 use Todo\CreateTask;
 use Todo\ViewTask;
+use Todo\Task;
 
 switch ($argv[1]) {
     case 'create':
@@ -14,9 +14,12 @@ switch ($argv[1]) {
             PDO::ATTR_ERRMODE, 
             PDO::ERRMODE_EXCEPTION
         );
+        $due = new DateTime($argv[3]);
+        $task = new Task($argv[2], $due, $argv[4], $argv[5]);
         $createTask = new CreateTask($pdo);
-        $task = $createTask->create($argv[2], $argv[3], $argv[4], $argv[5]);
-        echo $task . PHP_EOL;
+        $createTask->create($task);
+        
+        echo "Task created";
 
         break;
 
