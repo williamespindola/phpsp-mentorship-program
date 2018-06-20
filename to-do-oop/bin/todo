@@ -1,6 +1,19 @@
 #!/usr/bin/php
 <?php
 
-chdir(dirname(__DIR__));
+include __DIR__ . "/../vendor/autoload.php";
 
-var_dump($argv);
+use Todo\CreateTask;
+
+switch ($argv[1]) {
+    case 'create':
+
+        $createTask = new CreateTask(new \PDO('sqlite:todo.sqlite'));
+        $task = $createTask->create($argv[2], $argv[3], $argv[4], $argv[5]);
+        echo $task . PHP_EOL;
+
+        break;
+
+    default:
+        echo "Invalid option." . PHP_EOL;
+}

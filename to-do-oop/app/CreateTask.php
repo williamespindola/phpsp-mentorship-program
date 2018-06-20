@@ -8,14 +8,19 @@ class CreateTask
 
     public function __construct(\PDO $pdo)
     {
+        $pdo->setAttribute(
+            \PDO::ATTR_ERRMODE, 
+            \PDO::ERRMODE_EXCEPTION
+        );
         $this->db = $pdo;
+        
     }
 
     public function create(string $title, string $due, string $author, string $desription = null)
     {
         try {
             // $db = new \PDO('sqlite:todo.sqlite');
-            $insert = "INSERT INTO (title, due, author, description) VALUES (:title, :due, :author, :description)";
+            $insert = "INSERT INTO tasks (title, due, author, description) VALUES (:title, :due, :author, :description)";
             $stmt = $this->db
                         ->prepare($insert);
             $stmt->bindParam(':title', $title);
