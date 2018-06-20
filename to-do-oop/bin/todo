@@ -3,12 +3,18 @@
 
 include __DIR__ . "/../vendor/autoload.php";
 
+use PDO;
 use Todo\CreateTask;
+use Todo\ViewTask;
 
 switch ($argv[1]) {
     case 'create':
-
-        $createTask = new CreateTask(new \PDO('sqlite:todo.sqlite'));
+        $pdo = new PDO('sqlite:todo.sqlite');
+        $pdo->setAttribute(
+            PDO::ATTR_ERRMODE, 
+            PDO::ERRMODE_EXCEPTION
+        );
+        $createTask = new CreateTask($pdo);
         $task = $createTask->create($argv[2], $argv[3], $argv[4], $argv[5]);
         echo $task . PHP_EOL;
 

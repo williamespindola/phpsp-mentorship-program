@@ -1,25 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Todo;
+
+use PDO;
+use PDOException;
+use Todo\Exception\TaskException;
 
 class CreateTask
 {
     private $db;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(PDO $pdo)
     {
-        $pdo->setAttribute(
-            \PDO::ATTR_ERRMODE, 
-            \PDO::ERRMODE_EXCEPTION
-        );
         $this->db = $pdo;
-        
     }
 
-    public function create(string $title, string $due, string $author, string $desription = null)
+    public function create(string $title, string $due, string $author, string $desription) : void
     {
         try {
-            // $db = new \PDO('sqlite:todo.sqlite');
             $insert = "INSERT INTO tasks (title, due, author, description) VALUES (:title, :due, :author, :description)";
             $stmt = $this->db
                         ->prepare($insert);
@@ -28,10 +28,8 @@ class CreateTask
             $stmt->bindParam(':author', $author);
             $stmt->bindParam(':description', $description);
             $stmt->execute();
-
-            return "Task successfully created.";
-        } catch (\PDOException $exception) {
-            return "Unable to create Task, error: " . $exception->getMessage();
+        } catch (PDOException $exception) {
+            throw TaskException::forCreateTaskError($exception->getMessage());
         }
     }
 }
