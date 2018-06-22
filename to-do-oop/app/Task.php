@@ -26,10 +26,9 @@ class Task
         return $this->title;
     }
 
-    public function due() : string
+    public function due() : DateTime
     {
-        return $this->due
-                    ->format('Y-m-d');
+        return $this->due;
     }
 
     public function author() : string

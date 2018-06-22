@@ -26,7 +26,7 @@ class CreateTask
                         ->prepare($insert);
                         
             $stmt->bindValue(':title', $task->title());
-            $stmt->bindValue(':due', $task->due());
+            $stmt->bindValue(':due', $task->due()->format('Y-m-d'));
             $stmt->bindValue(':author', $task->author());
             $stmt->bindValue(':description', $task->description());
             $stmt->execute();
