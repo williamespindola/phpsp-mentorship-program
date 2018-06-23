@@ -21,6 +21,11 @@ class Task
         $this->description = $description;
     }
 
+    public function create(string $title, DateTime $due, string $author, string $description) : Task
+    {
+        return new static($title, $due, $author, $description);
+    }
+
     public function title() : string
     {
         return $this->title;

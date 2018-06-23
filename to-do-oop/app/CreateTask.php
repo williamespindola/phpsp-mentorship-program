@@ -4,33 +4,26 @@ declare(strict_types=1);
 
 namespace Todo;
 
-use PDO;
-use PDOException;
+use Exception;
 use Todo\Exception\TaskException;
 use Todo\Task;
+use Todo\Storage\TaskStorageAdapterInterface;
 
 class CreateTask
 {
-    private $db;
+    private $storage;
 
-    public function __construct(PDO $pdo)
+    public function __construct(TaskStorageAdapterInterface $storage)
     {
-        $this->db = $pdo;
+        $this->storage = $storage;
     }
 
     public function create(Task $task) : void
     {
         try {
-            $insert = "INSERT INTO tasks (title, due, author, description) VALUES (:title, :due, :author, :description)";
-            $stmt = $this->db
-                        ->prepare($insert);
-                        
-            $stmt->bindValue(':title', $task->title());
-            $stmt->bindValue(':due', $task->due()->format('Y-m-d'));
-            $stmt->bindValue(':author', $task->author());
-            $stmt->bindValue(':description', $task->description());
-            $stmt->execute();
-        } catch (PDOException $exception) {
+            $this->storage
+                ->persist($task);
+        } catch (Exception $exception) {
             throw TaskException::forCreateTaskError($exception->getMessage());
         }
     }
