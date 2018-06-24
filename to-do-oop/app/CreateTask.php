@@ -18,11 +18,13 @@ class CreateTask
         $this->storage = $storage;
     }
 
-    public function create(Task $task) : void
+    public function create(Task $task) : Task
     {
         try {
-            $this->storage
-                ->persist($task);
+            $createdTask = $this->storage
+                                ->persist($task);
+                                
+            return $createdTask;
         } catch (Exception $exception) {
             throw TaskException::forCreateTaskError($exception->getMessage());
         }

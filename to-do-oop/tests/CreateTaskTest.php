@@ -16,12 +16,15 @@ class CreateTaskTest extends TestCase
     public function shouldCreateTaskSuccessfully()
     {
         $task = new Task('lol', new DateTime('01-01-2018'), 'josé filho', 'uma descrição foda');
-        $connection = new SQLiteAdapter();
-        $createTask = new CreateTask($connection);
-        $createTask->create($task);
+        $mock = $this->createMock(CreateTask::class);
 
-        $createdTask = $connection->find($connection->lastInsertId());
+        $mock->expects($this->once())
+                        ->method('create')
+                        ->willReturn($task);
         
-        $this->assertEquals('lol', $createdTask->title());
+        $createTaskMock = $mock->create($task);
+
+        $this->assertEquals($task, $createTaskMock);
+        $this->assertEquals($task->title(), $createTaskMock->title());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Todo\Storage;
 
 use PDO;
@@ -26,7 +28,7 @@ class SQLiteAdapter implements TaskStorageAdapterInterface
 
     public function lastInsertId() : int
     {
-        return $this->db
+        return (int) $this->db
                     ->lastInsertId();
     }
 
