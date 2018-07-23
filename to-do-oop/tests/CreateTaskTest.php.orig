@@ -1,0 +1,61 @@
+<?php
+
+namespace Tests;
+
+use PHPUnit\Framework\TestCase;
+use DateTime;
+use PDO;
+use PDOStatement;
+use Todo\Task;
+use Todo\CreateTask;
+
+class CreateTaskTest extends TestCase
+{
+    public function shouldCreateTaskSuccessfully()
+    {
+<<<<<<< Updated upstream
+        $task = new Task('lol', new DateTime('01-01-2018'), 'josé filho', 'uma descrição foda');
+        $mock = $this->createMock(CreateTask::class);
+
+        $mock->expects($this->once())
+                        ->method('create')
+                        ->willReturn($task);
+        
+        $createTaskMock = $mock->create($task);
+
+        $this->assertEquals($task, $createTaskMock);
+        $this->assertEquals($task->title(), $createTaskMock->title());
+=======
+        $dummyTask = $this->createMock(Task::class);
+
+        $dummyTask->method('title')->willReturn('title');
+        $dummyTask->method('due')->willReturn(new \DateTime('2018-10-10'));
+        $dummyTask->method('author')->willReturn('author');
+        $dummyTask->method('description')->willReturn('description');
+
+        $dummyStatement = $this->createMock(PDOStatement::class)
+            ->setMethoda(['bindValue', 'execute'])
+            ->disableOriginalContstructor()
+            ->getMock();
+
+        $dummyConnection = $this->getMockBuilder(PDO::class)
+            ->setMethoda(['prepare'])
+            ->disableOriginalContstructor()
+            ->getMock();
+
+        $dummyConnection->expects($this->any())
+            ->method('prepare')
+            ->willReturn($dummyStatement);
+
+        $dummyStatement->expects($spy = $this->any())
+            ->method('execute')
+            ->willReturn($dummyStatement);
+
+        $createTask = new CreateTask($connection);
+
+        $createTask->create($dummyTask);
+
+        $this->assertCount(1, $spy->getInvocations());
+>>>>>>> Stashed changes
+    }
+}

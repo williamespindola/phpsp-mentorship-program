@@ -4,27 +4,44 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use DateTime;
-use Todo\Storage\SQLiteAdapter;
+use PDO;
+use PDOStatement;
 use Todo\Task;
 use Todo\CreateTask;
 
 class CreateTaskTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldCreateTaskSuccessfully()
+    public function testShouldCreateTaskSuccessfully()
     {
-        $task = new Task('lol', new DateTime('01-01-2018'), 'josé filho', 'uma descrição foda');
-        $mock = $this->createMock(CreateTask::class);
+        $dummyTask = $this->createMock(Task::class);
 
-        $mock->expects($this->once())
-                        ->method('create')
-                        ->willReturn($task);
-        
-        $createTaskMock = $mock->create($task);
+        $dummyTask->method('title')->willReturn('title');
+        $dummyTask->method('due')->willReturn(new \DateTime('2018-10-10'));
+        $dummyTask->method('author')->willReturn('author');
+        $dummyTask->method('description')->willReturn('description');
 
-        $this->assertEquals($task, $createTaskMock);
-        $this->assertEquals($task->title(), $createTaskMock->title());
+        $dummyStatement = $this->createMock(PDOStatement::class)
+            ->setMethods(['bindValue', 'execute'])
+            ->disableOriginalContstructor()
+            ->getMock();
+
+        $dummyConnection = $this->getMockBuilder(PDO::class)
+            ->setMethods(['prepare'])
+            ->disableOriginalContstructor()
+            ->getMock();
+
+        $dummyConnection->expects($this->any())
+            ->method('prepare')
+            ->willReturn($dummyStatement);
+
+        $dummyStatement->expects($spy = $this->any())
+            ->method('execute')
+            ->willReturn($dummyStatement);
+
+        $createTask = new CreateTask($connection);
+
+        $createTask->create($dummyTask);
+
+        $this->assertCount(1, $spy->getInvocations());
     }
 }
