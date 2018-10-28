@@ -3,4 +3,24 @@
 
 chdir(dirname(__DIR__));
 
-var_dump($argv);
+include __DIR__ . "/../vendor/autoload.php";
+
+use Todo\CreateTask;
+use Todo\ViewTask;
+use Todo\Task;
+use Todo\Storage\SQLiteAdapter;
+
+$connection = new SQLiteAdapter();
+
+switch ($argv[1]) {
+    case 'create':
+        $task = new Task($argv[2], new DateTime($argv[3]), $argv[4], $argv[5]);
+        $createTask = new CreateTask($connection);
+        $createTask->create($task);
+        
+        echo "Task created" . PHP_EOL;
+
+        break;
+    default:
+        echo "Invalid option." . PHP_EOL;
+}
