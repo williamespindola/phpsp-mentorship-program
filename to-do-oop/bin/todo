@@ -14,11 +14,13 @@ $connection = new SQLiteAdapter();
 
 switch ($argv[1]) {
     case 'create':
-        $task = new Task($argv[2], new DateTime($argv[3]), $argv[4], $argv[5]);
+        $task = new Task($argv[2], $argv[3], new DateTime($argv[4]), $argv[5]);
         $createTask = new CreateTask($connection);
         $createTask->create($task);
         
-        echo "Task created" . PHP_EOL;
+        echo "Task criada com sucesso para " . $task->author() . PHP_EOL;
+        echo "Task: " . $task->description() . PHP_EOL;
+        echo "Due date: " . $task->due()->format('m-d-Y H:i:s') . PHP_EOL;
 
         break;
     default:

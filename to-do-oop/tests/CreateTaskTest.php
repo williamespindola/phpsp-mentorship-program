@@ -16,7 +16,7 @@ class CreateTaskTest extends TestCase
      */
     public function shouldCreateTaskSuccessfully()
     {
-        $task = new Task('lol', new DateTime('01-01-2018'), 'josé filho', 'uma descrição foda');
+        $task = new Task('33.444.555.66', 'uma descrição foda', new DateTime('01-01-2018'), 'josé filho');
 
         $storage = $this->createMock(TaskStorageAdapterInterface::class);
         $storage->expects($this->once())
@@ -37,7 +37,7 @@ class CreateTaskTest extends TestCase
      */
     public function shouldThrowTaskExceptionWhenAdapterFails()
     {
-        $task = new Task('lol', new DateTime('01-01-2018'), 'josé filho', 'uma descrição foda');
+        $task = new Task('33.444.555.66', 'uma descrição foda', new DateTime('01-01-2018'), 'josé filho');
 
         $storage = $this->createMock(TaskStorageAdapterInterface::class);
         $storage->expects($this->once())

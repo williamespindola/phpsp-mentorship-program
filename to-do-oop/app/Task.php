@@ -8,27 +8,27 @@ use \DateTime;
 
 class Task
 {
-    private $title;
+    private $cpf;
     private $due;
-    private $author;
     private $description;
+    private $author;
 
-    public function __construct(string $title, DateTime $due, string $author, string $description)
+    public function __construct(string $cpf, string $description, DateTime $due, string $author)
     {
-        $this->title = $title;
+        $this->cpf = $cpf;
         $this->due = $due;
-        $this->author = $author;
         $this->description = $description;
+        $this->author = $author;
     }
 
-    public function create(string $title, DateTime $due, string $author, string $description) : Task
+    public function create(string $cpf, DateTime $due, string $author, string $description) : Task
     {
-        return new static($title, $due, $author, $description);
+        return new static($cpf, $due, $author, $description);
     }
 
-    public function title() : string
+    public function cpf() : string
     {
-        return $this->title;
+        return $this->cpf;
     }
 
     public function due() : DateTime
