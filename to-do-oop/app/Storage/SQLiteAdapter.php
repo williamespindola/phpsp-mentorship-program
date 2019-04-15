@@ -70,4 +70,5 @@ class SQLiteAdapter implements TaskStorageAdapterInterface
         $stmt->execute();
 
         return $task;
+    }
 }
