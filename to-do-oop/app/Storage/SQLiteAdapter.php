@@ -52,22 +52,23 @@ class SQLiteAdapter implements TaskStorageAdapterInterface
             throw TaskNotFoundException::notFound($task_id);
         }
 
-        $task = Task::create($result['title'], new DateTime($result['due']), $result['author'], $result['description']);
+        $task = Task::create($result['cpf'], $result['description'], new DateTime($result['due']), $result['author']);
 
         return $task;
     }
 
     public function persist(Task $task) : Task
     {
-        $insert = "INSERT INTO tasks (title, due, author, description) VALUES (:title, :due, :author, :description)";
+        $insert = "INSERT INTO tasks (cpf, description, due, author) VALUES (:cpf, :description, :due, :author)";
         $stmt = $this->db
                     ->prepare($insert);
                     
-        $stmt->bindValue(':title', $task->title());
+        $stmt->bindValue(':cpf', $task->cpf());
+        $stmt->bindValue(':description', $task->description());
         $stmt->bindValue(':due', $task->due()->format('Y-m-d'));
         $stmt->bindValue(':author', $task->author());
-        $stmt->bindValue(':description', $task->description());
         $stmt->execute();
 
         return $task;
+    }
 }
